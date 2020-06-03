@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'sign_in_button.dart';
 import 'social_sign_in_button.dart';
 
 class SignInPage extends StatelessWidget {
+  void _signInAnonymously() async {
+    final AuthResult authResult =
+        await FirebaseAuth.instance.signInAnonymously();
+    print('${authResult.user.uid}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +45,7 @@ class SignInPage extends StatelessWidget {
             assetName: 'images/google-logo.png',
             textColor: Colors.black87,
             color: Colors.white,
-            onPressed: _signInWithGoogle,
+            onPressed: () {},
           ),
           SizedBox(height: 8.0),
           SocialSignInButton(
@@ -65,14 +73,10 @@ class SignInPage extends StatelessWidget {
             text: 'Go anonymous',
             textColor: Colors.black,
             color: Colors.lime[300],
-            onPressed: () {},
+            onPressed: _signInAnonymously,
           ),
         ],
       ),
     );
-  }
-
-  void _signInWithGoogle() {
-    // TODO: Auth with Google
   }
 }
