@@ -8,6 +8,7 @@ class User {
 }
 
 abstract class AuthBase {
+  Stream<User> get onAuthStateChanged;
   Future<User> currentUser();
   Future<User> signInAnonymously();
   Future<void> signOut();
@@ -21,6 +22,11 @@ class Auth implements AuthBase {
       return null;
     }
     return User(uid: user.uid);
+  }
+
+  @override
+  Stream<User> get onAuthStateChanged {
+    return _auth.onAuthStateChanged.map(_userFromFirebase);
   }
 
   @override
