@@ -48,6 +48,30 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     _pswrdController.clear();
   }
 
+  Widget _buildPasswordTextField() {
+    return TextField(
+      controller: _pswrdController,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Password',
+      ),
+      textInputAction: TextInputAction.done,
+    );
+  }
+
+  Widget _buildEmailTextField() {
+    return TextField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        hintText: 'test@test.com',
+      ),
+      autocorrect: false,
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+    );
+  }
+
   List<Widget> _buildChildren() {
     final primaryText = _formType == EmailSignInFormType.signIn
         ? 'Sign in'
@@ -57,21 +81,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? 'Need an account? Register'
         : 'Have an account? Sign in';
     return [
-      TextField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email',
-          hintText: 'test@test.com',
-        ),
-      ),
+      _buildEmailTextField(),
       SizedBox(height: 8),
-      TextField(
-        controller: _pswrdController,
-        obscureText: true,
-        decoration: InputDecoration(
-          labelText: 'Password',
-        ),
-      ),
+      _buildPasswordTextField(),
       SizedBox(height: 16),
       FormSubmitButton(
         text: primaryText,
