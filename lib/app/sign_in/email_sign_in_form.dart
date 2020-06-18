@@ -23,6 +23,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   final _emailFocusNode = FocusNode();
   final _pswrdFocusNode = FocusNode();
   bool _submitted = false;
+  bool _isLoading = false;
 
   String get _email => _emailController.text;
   String get _password => _pswrdController.text;
@@ -32,6 +33,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   void _submit() async {
     setState(() {
       _submitted = true;
+      _isLoading = true;
     });
     try {
       if (_formType == EmailSignInFormType.signIn) {
@@ -42,6 +44,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop();
     } catch (e) {
       print(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -75,6 +81,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       textInputAction: TextInputAction.done,
       onEditingComplete: _submit,
       onChanged: (_) => _updateState(),
+      enabled: !_isLoading,
     );
   }
 
@@ -85,15 +92,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       controller: _emailController,
       focusNode: _emailFocusNode,
       decoration: InputDecoration(
-          labelText: 'Email',
-          hintText: 'test@test.com',
-          errorText:
-              shouldShowEmailErrorText ? widget.invalidEmailErrorText : null),
+        labelText: 'Email',
+        hintText: 'test@test.com',
+        errorText:
+            shouldShowEmailErrorText ? widget.invalidEmailErrorText : null,
+      ),
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: _emailEditingComplete,
       onChanged: (_) => _updateState(),
+      enabled: !_isLoading,
     );
   }
 
@@ -107,7 +116,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         : 'Have an account? Sign in';
 
     bool submitEnabled = !widget.emailValidator.isNotValid(_email) &&
-        !widget.pswrdValidator.isNotValid(_password);
+        !widget.pswrdValidator.isNotValid(_password) &&
+        !_isLoading;
 
     return [
       _buildEmailTextField(),
@@ -120,7 +130,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       SizedBox(height: 8),
       FlatButton(
-        onPressed: _toggleFormType,
+        onPressed: _isLoading ? null : _toggleFormType,
         child: Text(secondaryText),
       )
     ];
