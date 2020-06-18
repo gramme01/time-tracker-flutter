@@ -54,6 +54,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       _formType = _formType == EmailSignInFormType.signIn
           ? EmailSignInFormType.register
           : EmailSignInFormType.signIn;
+      _submitted = false;
     });
     _emailController.clear();
     _pswrdController.clear();
