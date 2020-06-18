@@ -17,8 +17,10 @@ class EmailSignInForm extends StatefulWidget {
 }
 
 class _EmailSignInFormState extends State<EmailSignInForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _pswrdController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _pswrdController = TextEditingController();
+  final _emailFocusNode = FocusNode();
+  final _pswrdFocusNode = FocusNode();
 
   String get _email => _emailController.text;
   String get _password => _pswrdController.text;
@@ -38,6 +40,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     }
   }
 
+  void _emailEditingComplete() {
+    FocusScope.of(context).requestFocus(_pswrdFocusNode);
+  }
+
   void _toggleFormType() {
     setState(() {
       _formType = _formType == EmailSignInFormType.signIn
@@ -51,17 +57,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   Widget _buildPasswordTextField() {
     return TextField(
       controller: _pswrdController,
+      focusNode: _pswrdFocusNode,
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Password',
       ),
       textInputAction: TextInputAction.done,
+      onEditingComplete: _submit,
     );
   }
 
   Widget _buildEmailTextField() {
     return TextField(
       controller: _emailController,
+      focusNode: _emailFocusNode,
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: 'test@test.com',
@@ -69,6 +78,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+      onEditingComplete: _emailEditingComplete,
     );
   }
 
