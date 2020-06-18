@@ -52,7 +52,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete() {
-    FocusScope.of(context).requestFocus(_pswrdFocusNode);
+    final FocusNode _newFocus = widget.emailValidator.isValid(_email)
+        ? _pswrdFocusNode
+        : _emailFocusNode;
+    FocusScope.of(context).requestFocus(_newFocus);
   }
 
   void _toggleFormType() {
@@ -115,8 +118,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? 'Need an account? Register'
         : 'Have an account? Sign in';
 
-    bool submitEnabled = !widget.emailValidator.isNotValid(_email) &&
-        !widget.pswrdValidator.isNotValid(_password) &&
+    bool submitEnabled = widget.emailValidator.isValid(_email) &&
+        widget.pswrdValidator.isValid(_password) &&
         !_isLoading;
 
     return [

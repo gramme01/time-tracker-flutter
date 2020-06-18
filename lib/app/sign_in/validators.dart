@@ -1,11 +1,17 @@
 abstract class StringValidator {
   bool isNotValid(String value);
+  bool isValid(String value);
 }
 
 class NonEmptyStringValidator implements StringValidator {
   @override
   bool isNotValid(String value) {
     return value.isEmpty;
+  }
+
+  @override
+  bool isValid(String value) {
+    return value.isNotEmpty;
   }
 }
 
