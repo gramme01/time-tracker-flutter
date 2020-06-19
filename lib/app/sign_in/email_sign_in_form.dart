@@ -47,7 +47,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       PlatformAlertDialog(
         title: 'Sign in failed',
         content: e.toString(),
-        defaultActionText: 'OK',
+        yesActionText: 'OK',
       ).show(context);
     } finally {
       setState(() {

@@ -8,15 +8,17 @@ import 'platform_widget.dart';
 class PlatformAlertDialog extends PlatformWidget {
   final String title;
   final String content;
-  final String defaultActionText;
+  final String noActionText;
+  final String yesActionText;
 
   PlatformAlertDialog({
     @required this.title,
     @required this.content,
-    @required this.defaultActionText,
+    this.noActionText,
+    @required this.yesActionText,
   })  : assert(title != null),
         assert(content != null),
-        assert(defaultActionText != null);
+        assert(yesActionText != null);
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -26,6 +28,7 @@ class PlatformAlertDialog extends PlatformWidget {
           )
         : await showDialog<bool>(
             context: context,
+            barrierDismissible: false,
             builder: (context) => this,
           );
   }
@@ -49,12 +52,23 @@ class PlatformAlertDialog extends PlatformWidget {
   }
 
   List<Widget> _buildActions(BuildContext context) {
-    return [
+    final actions = <Widget>[];
+
+    if (noActionText != null) {
+      actions.add(
+        PlatformAlertDialogAction(
+          child: Text(noActionText),
+          onPressed: () => Navigator.pop(context, false),
+        ),
+      );
+    }
+    actions.add(
       PlatformAlertDialogAction(
-        child: Text(defaultActionText),
-        onPressed: () => Navigator.pop(context),
+        child: Text(yesActionText),
+        onPressed: () => Navigator.pop(context, true),
       ),
-    ];
+    );
+    return actions;
   }
 }
 
