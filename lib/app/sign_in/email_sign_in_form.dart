@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common_widgets/form_submit_button.dart';
+import '../../common_widgets/platform_alert_dialog.dart';
 import '../../services/auth.dart';
 import 'validators.dart';
 
@@ -43,22 +44,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       Navigator.of(context).pop();
     } catch (e) {
-      print(e);
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Sign in failed'),
-            content: Text(e.toString()),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          );
-        },
-      );
+      PlatformAlertDialog(
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      ).show(context);
     } finally {
       setState(() {
         _isLoading = false;
