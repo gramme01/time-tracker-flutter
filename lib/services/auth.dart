@@ -66,6 +66,7 @@ class Auth implements AuthBase {
   @override
   Future<User> signInWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
+
     GoogleSignInAccount googleAccount = await googleSignIn.signIn();
 
     if (googleAccount != null) {
@@ -122,3 +123,36 @@ class Auth implements AuthBase {
     await _auth.signOut();
   }
 }
+
+/*
+  @override
+  Future<User> signInWithGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignInAccount googleAccount = await googleSignIn.signIn();
+
+    if (googleAccount != null) {
+      GoogleSignInAuthentication googleAuth =
+          await googleAccount.authentication;
+
+      if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+        final authResult = await _auth.signInWithCredential(
+          GoogleAuthProvider.getCredential(
+            idToken: googleAuth.idToken,
+            accessToken: googleAuth.accessToken,
+          ),
+        );
+        return _userFromFirebase(authResult.user);
+      } else {
+        throw PlatformException(
+          code: 'ERROR_MISSIN_GOOGLE_AUTH_TOKEN',
+          message: 'Missing Google Auth Token',
+        );
+      }
+    } else {
+      throw PlatformException(
+        code: 'ERROR_ABORTED_BY_USER',
+        message: 'Sign in aborted by User',
+      );
+    }
+  }
+  */
