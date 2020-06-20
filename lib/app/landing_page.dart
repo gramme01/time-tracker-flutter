@@ -14,7 +14,7 @@ class LandingPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           User user = snapshot.data;
-          if (user == null) return SignInPage();
+          if (user == null) return SignInPage.create(context);
           return HomePage();
         } else {
           return Scaffold(
