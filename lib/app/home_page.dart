@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_tracker/services/auth.dart';
 
 import '../common_widgets/platform_alert_dialog.dart';
-import '../services/auth_provider.dart';
 
 class HomePage extends StatelessWidget {
   Future<void> _signout(BuildContext context) async {
     try {
-      final auth = AuthProvider.of(context);
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
       print(e);
