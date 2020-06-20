@@ -30,6 +30,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _pswrdController.dispose();
+    _emailFocusNode.dispose();
+    _pswrdFocusNode.dispose();
+  }
+
   void _submit() async {
     setState(() {
       _submitted = true;
