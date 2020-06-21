@@ -8,13 +8,29 @@ class EmailSignInModel {
   final String password;
   final EmailSignInFormType formType;
   final bool isLoading;
-  final bool submitted;
+  final bool hasSubmitted;
 
   EmailSignInModel({
     this.email = '',
     this.password = '',
     this.formType = EmailSignInFormType.signIn,
     this.isLoading = false,
-    this.submitted = false,
+    this.hasSubmitted = false,
   });
+
+  EmailSignInModel copyWith({
+    String email,
+    String password,
+    EmailSignInFormType formType,
+    bool isLoading,
+    bool hasSubmitted,
+  }) {
+    return EmailSignInModel(
+      email: email ?? this.email,
+      password: password ?? this.password,
+      formType: formType ?? this.formType,
+      isLoading: isLoading ?? this.isLoading,
+      hasSubmitted: hasSubmitted ?? this.hasSubmitted,
+    );
+  }
 }
