@@ -5,12 +5,8 @@ import 'package:provider/provider.dart';
 import '../../common_widgets/form_submit_button.dart';
 import '../../common_widgets/platform_exception_alert_dialog.dart';
 import '../../services/auth.dart';
+import 'email_sign_in_model.dart';
 import 'validators.dart';
-
-enum EmailSignInFormType {
-  signIn,
-  register,
-}
 
 class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
   @override

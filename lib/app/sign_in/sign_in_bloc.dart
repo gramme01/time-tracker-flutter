@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:time_tracker/services/auth.dart';
+
+import '../../services/auth.dart';
 
 class SignInBloc {
   final AuthBase auth;
