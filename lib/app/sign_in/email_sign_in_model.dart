@@ -1,9 +1,11 @@
+import 'validators.dart';
+
 enum EmailSignInFormType {
   signIn,
   register,
 }
 
-class EmailSignInModel {
+class EmailSignInModel with EmailAndPasswordValidators {
   final String email;
   final String password;
   final EmailSignInFormType formType;
@@ -17,6 +19,36 @@ class EmailSignInModel {
     this.isLoading = false,
     this.hasSubmitted = false,
   });
+
+  String get primaryButtonText {
+    return formType == EmailSignInFormType.signIn
+        ? 'Sign in'
+        : 'Create an account';
+  }
+
+  String get secondaryButtonText {
+    return formType == EmailSignInFormType.signIn
+        ? 'Need an account? Register'
+        : 'Have an account? Sign in';
+  }
+
+  bool get canSubmit {
+    return emailValidator.isValid(email) &&
+        pswrdValidator.isValid(password) &&
+        !isLoading;
+  }
+
+  String get emailErrorText {
+    bool shouldShowEmailErrorText =
+        hasSubmitted && emailValidator.isNotValid(email);
+    return shouldShowEmailErrorText ? invalidEmailErrorText : null;
+  }
+
+  String get passwordErrorText {
+    bool shouldShowPasswordErrorText =
+        hasSubmitted && pswrdValidator.isNotValid(password);
+    return shouldShowPasswordErrorText ? invalidPasswordErrorText : null;
+  }
 
   EmailSignInModel copyWith({
     String email,
