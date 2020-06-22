@@ -8,12 +8,14 @@ import '../../services/auth.dart';
 import 'email_sign_in_model.dart';
 import 'validators.dart';
 
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
+class EmailSignInFormStateful extends StatefulWidget
+    with EmailAndPasswordValidators {
   @override
-  _EmailSignInFormState createState() => _EmailSignInFormState();
+  _EmailSignInFormStatefulState createState() =>
+      _EmailSignInFormStatefulState();
 }
 
-class _EmailSignInFormState extends State<EmailSignInForm> {
+class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   final _emailController = TextEditingController();
   final _pswrdController = TextEditingController();
   final _emailFocusNode = FocusNode();
@@ -35,7 +37,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     _pswrdFocusNode.dispose();
   }
 
-  void _submit() async {
+  Future<void> _submit() async {
     setState(() {
       _submitted = true;
       _isLoading = true;
