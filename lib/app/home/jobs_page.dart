@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/services/auth.dart';
 
-import '../common_widgets/platform_alert_dialog.dart';
+import '../../common_widgets/platform_alert_dialog.dart';
 
-class HomePage extends StatelessWidget {
+class JobsPage extends StatelessWidget {
   Future<void> _signout(BuildContext context) async {
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Jobs'),
         actions: <Widget>[
           FlatButton(
             onPressed: () => _confirmSignOut(context),
