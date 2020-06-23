@@ -34,7 +34,7 @@ class _EmailSignInFormChangeNotifierState
   final _emailFocusNode = FocusNode();
   final _pswrdFocusNode = FocusNode();
 
-  EmailSignInChangeModel get model => model;
+  EmailSignInChangeModel get model => widget.model;
 
   @override
   void dispose() {
