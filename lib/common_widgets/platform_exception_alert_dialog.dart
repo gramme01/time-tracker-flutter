@@ -15,6 +15,12 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
         );
 
   static String _message(PlatformException exception) {
+    if (exception.message ==
+        'PERMISSION_DENIED: Missing or insufficient permissions.') {
+      if (exception.code == 'Error performing setData') {
+        return 'Missing or insufficient permissions';
+      }
+    }
     return _errors[exception.code] ?? exception.message;
   }
 
