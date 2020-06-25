@@ -7,7 +7,7 @@ import '../app/home/models/job.dart';
 abstract class Database {
   // Future<void> setJob(Job job);
   Future<void> createJob(Job job);
-  void readJobs();
+  Stream<List<Job>> jobsStream();
 }
 
 class FirestoreDatabase implements Database {
@@ -21,13 +21,18 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  void readJobs() async {
+  Stream<List<Job>> jobsStream() {
     final path = APIPath.jobs(uid);
     final reference = Firestore.instance.collection(path);
     final snapshots = reference.snapshots();
-    snapshots.listen((event) {
-      event.documents.forEach((snapshot) => print(snapshot.data));
-    });
+    return snapshots.map(
+      (event) => event.documents.map(
+        (snapshot) => Job(
+          name: snapshot.data['name'],
+          ratePerHour: snapshot.data['ratePerHour'],
+        ),
+      ),
+    );
   }
 
   Future<void> _setData({String path, Map<String, dynamic> data}) async {

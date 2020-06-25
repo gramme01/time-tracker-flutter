@@ -45,9 +45,6 @@ class JobsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO delete temporary code
-    final database = Provider.of<Database>(context);
-    database.readJobs();
     return Scaffold(
       appBar: AppBar(
         title: Text('Jobs'),
@@ -61,10 +58,30 @@ class JobsPage extends StatelessWidget {
           )
         ],
       ),
+      body: _buildContents(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _createJob(context),
       ),
+    );
+  }
+
+  Widget _buildContents(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<List<Job>>(
+      stream: database.jobsStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final jobs = snapshot.data;
+          final children = jobs.map((job) => Text(job.name)).toList();
+          return ListView(
+            children: children,
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
