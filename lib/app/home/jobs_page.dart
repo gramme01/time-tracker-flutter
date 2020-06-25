@@ -78,6 +78,11 @@ class JobsPage extends StatelessWidget {
             children: children,
           );
         }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Unable to load job feed'),
+          );
+        }
         return Center(
           child: CircularProgressIndicator(),
         );
