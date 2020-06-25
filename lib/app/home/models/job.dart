@@ -19,7 +19,6 @@ class Job {
 
   static Job fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
-
     return Job(
       name: map['name'],
       ratePerHour: map['ratePerHour'],
