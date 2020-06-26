@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
-import 'package:time_tracker/services/database.dart';
 
-import '../../common_widgets/platform_alert_dialog.dart';
-import '../../services/auth.dart';
-import 'models/job.dart';
+import '../../../common_widgets/platform_alert_dialog.dart';
+import '../../../common_widgets/platform_exception_alert_dialog.dart';
+import '../../../services/auth.dart';
+import '../../../services/database.dart';
+import '../models/job.dart';
+import 'add_job_page.dart';
 
 class JobsPage extends StatelessWidget {
   Future<void> _signout(BuildContext context) async {
@@ -29,20 +30,6 @@ class JobsPage extends StatelessWidget {
     if (didRequestSignOut) _signout(context);
   }
 
-  Future<void> _createJob(BuildContext context) async {
-    try {
-      final database = Provider.of<Database>(context, listen: false);
-      await database.createJob(
-        Job(name: 'Blogging', ratePerHour: 30),
-      );
-    } on PlatformException catch (e) {
-      PlatformExceptionAlertDialog(
-        title: 'Operation Failed',
-        exception: e,
-      ).show(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +48,7 @@ class JobsPage extends StatelessWidget {
       body: _buildContents(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => _createJob(context),
+        onPressed: () => AddJobPage.show(context),
       ),
     );
   }
