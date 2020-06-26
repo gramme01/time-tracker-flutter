@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
 class FirestoreService {
+  FirestoreService._();
+
+  static final instance = FirestoreService._();
+
   Future<void> setData({String path, Map<String, dynamic> data}) async {
     final reference = Firestore.instance.document(path);
     print('$path: $data');
