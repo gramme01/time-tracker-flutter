@@ -5,7 +5,7 @@ import '../../../common_widgets/platform_alert_dialog.dart';
 import '../../../services/auth.dart';
 import '../../../services/database.dart';
 import '../models/job.dart';
-import 'add_job_page.dart';
+import 'edit_job_page.dart';
 import 'job_list_tile.dart';
 
 class JobsPage extends StatelessWidget {
@@ -47,7 +47,7 @@ class JobsPage extends StatelessWidget {
       body: _buildContents(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => AddJobPage.show(context),
+        onPressed: () => EditJobPage.show(context),
       ),
     );
   }
@@ -62,7 +62,7 @@ class JobsPage extends StatelessWidget {
           final children = jobs
               .map((job) => JobListTile(
                     job: job,
-                    onTap: () {},
+                    onTap: () => EditJobPage.show(context, job: job),
                   ))
               .toList();
           return ListView(
