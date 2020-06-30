@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 class Job {
+  final String id;
   final String name;
   final int ratePerHour;
   Job({
+    @required this.id,
     @required this.name,
     @required this.ratePerHour,
   });
@@ -17,15 +19,14 @@ class Job {
     };
   }
 
-  static Job fromMap(Map<String, dynamic> map) {
+  static Job fromMap(Map<String, dynamic> map, String documentId) {
     if (map == null) return null;
     return Job(
+      id: documentId,
       name: map['name'],
       ratePerHour: map['ratePerHour'],
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  static Job fromJson(String source) => fromMap(json.decode(source));
 }
