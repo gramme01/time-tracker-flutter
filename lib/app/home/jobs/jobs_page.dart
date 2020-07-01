@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/app/home/jobs/empty_content.dart';
 
 import '../../../common_widgets/platform_alert_dialog.dart';
 import '../../../services/auth.dart';
@@ -59,15 +60,19 @@ class JobsPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final jobs = snapshot.data;
-          final children = jobs
-              .map((job) => JobListTile(
-                    job: job,
-                    onTap: () => EditJobPage.show(context, job: job),
-                  ))
-              .toList();
-          return ListView(
-            children: children,
-          );
+          if (jobs.isNotEmpty) {
+            final children = jobs
+                .map((job) => JobListTile(
+                      job: job,
+                      onTap: () => EditJobPage.show(context, job: job),
+                    ))
+                .toList();
+            return ListView(
+              children: children,
+            );
+          } else {
+            return EmptyContent();
+          }
         }
         if (snapshot.hasError) {
           return Center(
