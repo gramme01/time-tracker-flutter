@@ -75,5 +75,3 @@ class FirestoreDatabase implements Database {
 //gsdhfdskjdhfdskjdfhdsjfhds
 
 //jhksjdfdh sfdshjfhds
-
-//jaeowurkjdf vs mxnmcvs
