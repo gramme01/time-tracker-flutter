@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import '../models/job.dart';
+
 import '../../../common_widgets/platform_alert_dialog.dart';
 import '../../../common_widgets/platform_exception_alert_dialog.dart';
 import '../../../services/database.dart';
+import '../models/job.dart';
 
 class EditJobPage extends StatefulWidget {
   final Database database;
