@@ -71,7 +71,3 @@ class FirestoreDatabase implements Database {
         sort: (lhs, rhs) => rhs.start.compareTo(lhs.start),
       );
 }
-
-//gsdhfdskjdhfdskjdfhdsjfhds
-
-//jhksjdfdh sfdshjfhds
