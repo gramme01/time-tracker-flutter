@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:time_tracker/app/home/models/job.dart';
-import 'package:time_tracker/common_widgets/platform_alert_dialog.dart';
-import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
-import 'package:time_tracker/services/database.dart';
+
+import '../../../common_widgets/platform_alert_dialog.dart';
+import '../../../common_widgets/platform_exception_alert_dialog.dart';
+import '../../../services/database.dart';
+import '../models/job.dart';
 
 class EditJobPage extends StatefulWidget {
   final Database database;
@@ -12,8 +12,8 @@ class EditJobPage extends StatefulWidget {
   const EditJobPage({Key key, @required this.database, this.job})
       : super(key: key);
 
-  static Future<void> show(BuildContext context, {Job job}) async {
-    final database = Provider.of<Database>(context, listen: false);
+  static Future<void> show(BuildContext context,
+      {Database database, Job job}) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EditJobPage(
@@ -138,7 +138,7 @@ class _EditJobPageState extends State<EditJobPage> {
       SizedBox(height: 20),
       TextFormField(
         decoration: InputDecoration(labelText: 'Rate per hour'),
-        initialValue: _ratePerHour.toString(),
+        initialValue: (_ratePerHour ?? '').toString(),
         keyboardType: TextInputType.numberWithOptions(
           decimal: false,
           signed: false,
