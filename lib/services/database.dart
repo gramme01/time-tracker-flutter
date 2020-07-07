@@ -11,7 +11,7 @@ abstract class Database {
   Future<void> setJob(Job job);
   Future<void> deleteJob(Job job);
   Stream<List<Job>> jobsStream();
-
+  Stream<Job> jobStream({@required String jobId});
   Future<void> setEntry(Entry entry);
   Future<void> deleteEntry(Entry entry);
   Stream<List<Entry>> entriesStream({Job job});
@@ -45,9 +45,15 @@ class FirestoreDatabase implements Database {
   }
 
   @override
+  Stream<Job> jobStream({@required String jobId}) => _service.documentStream(
+        path: APIPath.job(uid, jobId),
+        builder: Job.fromMap,
+      );
+
+  @override
   Stream<List<Job>> jobsStream() => _service.collectionStream(
         path: APIPath.jobs(uid),
-        builder: (data, documentId) => Job.fromMap(data, documentId),
+        builder: Job.fromMap,
       );
 
   @override
