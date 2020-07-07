@@ -6,7 +6,7 @@ import '../../../common_widgets/platform_exception_alert_dialog.dart';
 import '../../../services/database.dart';
 import '../models/entry.dart';
 import '../models/job.dart';
-import 'date_time_picker.dart';
+import '../../../common_widgets/date_time_picker.dart';
 import 'format.dart';
 
 class EntryPage extends StatefulWidget {
@@ -120,8 +120,8 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'Start',
       selectedDate: _startDate,
       selectedTime: _startTime,
-      selectDate: (date) => setState(() => _startDate = date),
-      selectTime: (time) => setState(() => _startTime = time),
+      onSelectDate: (date) => setState(() => _startDate = date),
+      onSelectTime: (time) => setState(() => _startTime = time),
     );
   }
 
@@ -130,8 +130,8 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'End',
       selectedDate: _endDate,
       selectedTime: _endTime,
-      selectDate: (date) => setState(() => _endDate = date),
-      selectTime: (time) => setState(() => _endTime = time),
+      onSelectDate: (date) => setState(() => _endDate = date),
+      onSelectTime: (time) => setState(() => _endTime = time),
     );
   }
 
