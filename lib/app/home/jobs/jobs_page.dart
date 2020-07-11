@@ -1,38 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker/app/home/job_entries/job_entries_page.dart';
-import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
 
-import '../../../common_widgets/platform_alert_dialog.dart';
-import '../../../services/auth.dart';
+import '../../../common_widgets/platform_exception_alert_dialog.dart';
 import '../../../services/database.dart';
+import '../job_entries/job_entries_page.dart';
 import '../models/job.dart';
 import 'edit_job_page.dart';
 import 'job_list_tile.dart';
 import 'list_items_builder.dart';
 
 class JobsPage extends StatelessWidget {
-  Future<void> _signout(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await PlatformAlertDialog(
-            title: 'Logout',
-            content: 'Are you sure you want to logout',
-            noActionText: 'Cancel',
-            yesActionText: 'Logout')
-        .show(context);
-
-    if (didRequestSignOut) _signout(context);
-  }
-
   Future<void> _delete(BuildContext context, Job job) async {
     try {
       final database = Provider.of<Database>(context, listen: false);
@@ -59,13 +37,6 @@ class JobsPage extends StatelessWidget {
             onPressed: () => EditJobPage.show(context,
                 database: Provider.of<Database>(context, listen: false)),
           ),
-          FlatButton(
-            onPressed: () => _confirmSignOut(context),
-            child: Text(
-              'Logout',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          )
         ],
       ),
       body: _buildContents(context),
