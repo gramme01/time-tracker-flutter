@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:time_tracker_flutter_course/app/home/entries/daily_jobs_details.dart';
-import 'package:time_tracker_flutter_course/app/home/entries/entries_list_tile.dart';
-import 'package:time_tracker_flutter_course/app/home/entries/entry_job.dart';
-import 'package:time_tracker_flutter_course/app/home/job_entries/format.dart';
-import 'package:time_tracker_flutter_course/app/home/models/entry.dart';
-import 'package:time_tracker_flutter_course/app/home/models/job.dart';
-import 'package:time_tracker_flutter_course/services/database.dart';
+
+import '../../../services/database.dart';
+import '../job_entries/format.dart';
+import '../models/entry.dart';
+import '../models/job.dart';
+import 'daily_jobs_details.dart';
+import 'entries_list_tile.dart';
+import 'entry_job.dart';
 
 class EntriesBloc {
   EntriesBloc({@required this.database});
