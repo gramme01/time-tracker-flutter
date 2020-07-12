@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'daily_jobs_details.dart';
-import 'entries_list_tile.dart';
-import 'entry_job.dart';
+
+import '../../../services/database.dart';
 import '../job_entries/format.dart';
 import '../models/entry.dart';
 import '../models/job.dart';
-import '../../../services/database.dart';
+import 'daily_jobs_details.dart';
+import 'entries_list_tile.dart';
+import 'entry_job.dart';
 
 class EntriesBloc {
   EntriesBloc({@required this.database});

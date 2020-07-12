@@ -1,25 +1,38 @@
 import 'package:flutter/foundation.dart';
-import 'package:time_tracker/services/auth.dart';
 
+import '../../services/auth.dart';
 import 'email_sign_in_model.dart';
 import 'validators.dart';
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
-  String email;
-  String password;
-  EmailSignInFormType formType;
-  bool isLoading;
-  bool hasSubmitted;
-  final AuthBase auth;
-
   EmailSignInChangeModel({
     @required this.auth,
     this.email = '',
     this.password = '',
     this.formType = EmailSignInFormType.signIn,
     this.isLoading = false,
-    this.hasSubmitted = false,
+    this.submitted = false,
   });
+  final AuthBase auth;
+  String email;
+  String password;
+  EmailSignInFormType formType;
+  bool isLoading;
+  bool submitted;
+
+  Future<void> submit() async {
+    updateWith(submitted: true, isLoading: true);
+    try {
+      if (formType == EmailSignInFormType.signIn) {
+        await auth.signInWithEmailAndPassword(email, password);
+      } else {
+        await auth.createUserWithEmailAndPassword(email, password);
+      }
+    } catch (e) {
+      updateWith(isLoading: false);
+      rethrow;
+    }
+  }
 
   String get primaryButtonText {
     return formType == EmailSignInFormType.signIn
@@ -35,24 +48,19 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
 
   bool get canSubmit {
     return emailValidator.isValid(email) &&
-        pswrdValidator.isValid(password) &&
+        passwordValidator.isValid(password) &&
         !isLoading;
   }
 
-  String get emailErrorText {
-    bool shouldShowEmailErrorText =
-        hasSubmitted && emailValidator.isNotValid(email);
-    return shouldShowEmailErrorText ? invalidEmailErrorText : null;
-  }
-
   String get passwordErrorText {
-    bool shouldShowPasswordErrorText =
-        hasSubmitted && pswrdValidator.isNotValid(password);
-    return shouldShowPasswordErrorText ? invalidPasswordErrorText : null;
+    bool showErrorText = submitted && !passwordValidator.isValid(password);
+    return showErrorText ? invalidPasswordErrorText : null;
   }
 
-  void updateEmail(String email) => updateWith(email: email);
-  void updatePswrd(String password) => updateWith(password: password);
+  String get emailErrorText {
+    bool showErrorText = submitted && !emailValidator.isValid(email);
+    return showErrorText ? invalidEmailErrorText : null;
+  }
 
   void toggleFormType() {
     final formType = this.formType == EmailSignInFormType.signIn
@@ -62,37 +70,27 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       email: '',
       password: '',
       formType: formType,
-      hasSubmitted: false,
       isLoading: false,
+      submitted: false,
     );
   }
+
+  void updateEmail(String email) => updateWith(email: email);
+
+  void updatePassword(String password) => updateWith(password: password);
 
   void updateWith({
     String email,
     String password,
     EmailSignInFormType formType,
     bool isLoading,
-    bool hasSubmitted,
+    bool submitted,
   }) {
     this.email = email ?? this.email;
     this.password = password ?? this.password;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;
-    this.hasSubmitted = hasSubmitted ?? this.hasSubmitted;
+    this.submitted = submitted ?? this.submitted;
     notifyListeners();
-  }
-
-  Future<void> submit() async {
-    updateWith(hasSubmitted: true, isLoading: true);
-    try {
-      if (this.formType == EmailSignInFormType.signIn) {
-        await auth.signInWithEmailAndPassword(this.email, this.password);
-      } else {
-        await auth.createUserWithEmailAndPassword(this.email, this.password);
-      }
-    } catch (e) {
-      updateWith(isLoading: false);
-      rethrow;
-    }
   }
 }

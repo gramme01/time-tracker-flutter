@@ -12,12 +12,13 @@ abstract class Database {
   Future<void> deleteJob(Job job);
   Stream<List<Job>> jobsStream();
   Stream<Job> jobStream({@required String jobId});
+
   Future<void> setEntry(Entry entry);
   Future<void> deleteEntry(Entry entry);
   Stream<List<Entry>> entriesStream({Job job});
 }
 
-String documentIdFromCurrentDate = DateTime.now().toIso8601String();
+String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
 class FirestoreDatabase implements Database {
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
@@ -47,13 +48,13 @@ class FirestoreDatabase implements Database {
   @override
   Stream<Job> jobStream({@required String jobId}) => _service.documentStream(
         path: APIPath.job(uid, jobId),
-        builder: Job.fromMap,
+        builder: (data, documentId) => Job.fromMap(data, documentId),
       );
 
   @override
   Stream<List<Job>> jobsStream() => _service.collectionStream(
         path: APIPath.jobs(uid),
-        builder: Job.fromMap,
+        builder: (data, documentId) => Job.fromMap(data, documentId),
       );
 
   @override

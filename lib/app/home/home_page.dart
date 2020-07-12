@@ -6,13 +6,14 @@ import 'entries/entries_page.dart';
 import 'jobs/jobs_page.dart';
 import 'tab_item.dart';
 
-class Homepage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomePageState extends State<HomePage> {
   TabItem _currentTab = TabItem.jobs;
+
   final Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.jobs: GlobalKey<NavigatorState>(),
     TabItem.entries: GlobalKey<NavigatorState>(),
@@ -22,16 +23,17 @@ class _HomepageState extends State<Homepage> {
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       TabItem.jobs: (_) => JobsPage(),
-      TabItem.entries: (context) => EntriesPage.create(context),
+      TabItem.entries: (_) => EntriesPage.create(context),
       TabItem.account: (_) => AccountPage(),
     };
   }
 
-  void _select(TabItem tabitem) {
-    if (tabitem == _currentTab) {
-      navigatorKeys[tabitem].currentState.popUntil((route) => route.isFirst);
+  void _select(TabItem tabItem) {
+    if (tabItem == _currentTab) {
+      // pop to first route
+      navigatorKeys[tabItem].currentState.popUntil((route) => route.isFirst);
     } else {
-      setState(() => _currentTab = tabitem);
+      setState(() => _currentTab = tabItem);
     }
   }
 

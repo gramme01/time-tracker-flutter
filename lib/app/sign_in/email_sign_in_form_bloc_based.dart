@@ -9,17 +9,17 @@ import 'email_sign_in_bloc.dart';
 import 'email_sign_in_model.dart';
 
 class EmailSignInFormBlocBased extends StatefulWidget {
-  final EmailSignInBloc bloc;
   EmailSignInFormBlocBased({@required this.bloc});
+  final EmailSignInBloc bloc;
 
   static Widget create(BuildContext context) {
-    final AuthBase auth = Provider.of<AuthBase>(context, listen: false);
+    final AuthBase auth = Provider.of<AuthBase>(context);
     return Provider<EmailSignInBloc>(
-      create: (_) => EmailSignInBloc(auth: auth),
-      dispose: (_, bloc) => bloc.dispose(),
+      builder: (context) => EmailSignInBloc(auth: auth),
       child: Consumer<EmailSignInBloc>(
         builder: (context, bloc, _) => EmailSignInFormBlocBased(bloc: bloc),
       ),
+      dispose: (context, bloc) => bloc.dispose(),
     );
   }
 
@@ -29,18 +29,18 @@ class EmailSignInFormBlocBased extends StatefulWidget {
 }
 
 class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
-  final _emailController = TextEditingController();
-  final _pswrdController = TextEditingController();
-  final _emailFocusNode = FocusNode();
-  final _pswrdFocusNode = FocusNode();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
-    _pswrdController.dispose();
+    _passwordController.dispose();
     _emailFocusNode.dispose();
-    _pswrdFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _submit() async {
@@ -56,35 +56,53 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final FocusNode _newFocus = model.emailValidator.isValid(model.email)
-        ? _pswrdFocusNode
+    final newFocus = model.emailValidator.isValid(model.email)
+        ? _passwordFocusNode
         : _emailFocusNode;
-    FocusScope.of(context).requestFocus(_newFocus);
+    FocusScope.of(context).requestFocus(newFocus);
   }
 
   void _toggleFormType() {
     widget.bloc.toggleFormType();
     _emailController.clear();
-    _pswrdController.clear();
+    _passwordController.clear();
   }
 
-  Widget _buildPasswordTextField(EmailSignInModel model) {
+  List<Widget> _buildChildren(EmailSignInModel model) {
+    return [
+      _buildEmailTextField(model),
+      SizedBox(height: 8.0),
+      _buildPasswordTextField(model),
+      SizedBox(height: 8.0),
+      FormSubmitButton(
+        text: model.primaryButtonText,
+        onPressed: model.canSubmit ? _submit : null,
+      ),
+      SizedBox(height: 8.0),
+      FlatButton(
+        child: Text(model.secondaryButtonText),
+        onPressed: !model.isLoading ? _toggleFormType : null,
+      ),
+    ];
+  }
+
+  TextField _buildPasswordTextField(EmailSignInModel model) {
     return TextField(
-      controller: _pswrdController,
-      focusNode: _pswrdFocusNode,
-      obscureText: true,
+      controller: _passwordController,
+      focusNode: _passwordFocusNode,
       decoration: InputDecoration(
         labelText: 'Password',
         errorText: model.passwordErrorText,
+        enabled: model.isLoading == false,
       ),
+      obscureText: true,
       textInputAction: TextInputAction.done,
+      onChanged: widget.bloc.updatePassword,
       onEditingComplete: _submit,
-      onChanged: widget.bloc.updatePswrd,
-      enabled: !model.isLoading,
     );
   }
 
-  Widget _buildEmailTextField(EmailSignInModel model) {
+  TextField _buildEmailTextField(EmailSignInModel model) {
     return TextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
@@ -92,32 +110,14 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
         labelText: 'Email',
         hintText: 'test@test.com',
         errorText: model.emailErrorText,
+        enabled: model.isLoading == false,
       ),
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      onEditingComplete: () => _emailEditingComplete(model),
       onChanged: widget.bloc.updateEmail,
-      enabled: !model.isLoading,
+      onEditingComplete: () => _emailEditingComplete(model),
     );
-  }
-
-  List<Widget> _buildChildren(EmailSignInModel model) {
-    return [
-      _buildEmailTextField(model),
-      SizedBox(height: 8),
-      _buildPasswordTextField(model),
-      SizedBox(height: 16),
-      FormSubmitButton(
-        text: model.primaryButtonText,
-        onPressed: model.canSubmit ? _submit : null,
-      ),
-      SizedBox(height: 8),
-      FlatButton(
-        onPressed: model.isLoading ? null : _toggleFormType,
-        child: Text(model.secondaryButtonText),
-      )
-    ];
   }
 
   @override
@@ -130,8 +130,8 @@ class _EmailSignInFormBlocBasedState extends State<EmailSignInFormBlocBased> {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: _buildChildren(model),
             ),
           );

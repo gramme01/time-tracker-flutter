@@ -7,19 +7,19 @@ import '../../../services/database.dart';
 import '../models/job.dart';
 
 class EditJobPage extends StatefulWidget {
-  final Database database;
-  final Job job;
   const EditJobPage({Key key, @required this.database, this.job})
       : super(key: key);
+  final Database database;
+  final Job job;
 
-  static Future<void> show(BuildContext context,
-      {Database database, Job job}) async {
+  static Future<void> show(
+    BuildContext context, {
+    Database database,
+    Job job,
+  }) async {
     await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => EditJobPage(
-          database: database,
-          job: job,
-        ),
+        builder: (context) => EditJobPage(database: database, job: job),
         fullscreenDialog: true,
       ),
     );
@@ -65,17 +65,17 @@ class _EditJobPageState extends State<EditJobPage> {
           PlatformAlertDialog(
             title: 'Name already used',
             content: 'Please choose a different job name',
-            yesActionText: 'OK',
+            defaultActionText: 'OK',
           ).show(context);
         } else {
-          final id = widget.job?.id ?? documentIdFromCurrentDate;
+          final id = widget.job?.id ?? documentIdFromCurrentDate();
           final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
           await widget.database.setJob(job);
           Navigator.of(context).pop();
         }
       } on PlatformException catch (e) {
         PlatformExceptionAlertDialog(
-          title: 'Error Occurred',
+          title: 'Operation failed',
           exception: e,
         ).show(context);
       }
@@ -135,13 +135,12 @@ class _EditJobPageState extends State<EditJobPage> {
         validator: (value) => value.isNotEmpty ? null : 'Name can\'t be empty',
         onSaved: (value) => _name = value,
       ),
-      SizedBox(height: 20),
       TextFormField(
         decoration: InputDecoration(labelText: 'Rate per hour'),
-        initialValue: (_ratePerHour ?? '').toString(),
+        initialValue: _ratePerHour != null ? '$_ratePerHour' : null,
         keyboardType: TextInputType.numberWithOptions(
-          decimal: false,
           signed: false,
+          decimal: false,
         ),
         onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
       ),

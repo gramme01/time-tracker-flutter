@@ -5,24 +5,25 @@ import '../../../common_widgets/platform_alert_dialog.dart';
 import '../../../services/auth.dart';
 
 class AccountPage extends StatelessWidget {
-  Future<void> _signout(BuildContext context) async {
+  Future<void> _signOut(BuildContext context) async {
     try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
+      final auth = Provider.of<AuthBase>(context);
       await auth.signOut();
     } catch (e) {
-      print(e);
+      print(e.toString());
     }
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await PlatformAlertDialog(
-            title: 'Logout',
-            content: 'Are you sure you want to logout',
-            noActionText: 'Cancel',
-            yesActionText: 'Logout')
-        .show(context);
-
-    if (didRequestSignOut) _signout(context);
+      title: 'Logout',
+      content: 'Are you sure that you want to logout?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Logout',
+    ).show(context);
+    if (didRequestSignOut == true) {
+      _signOut(context);
+    }
   }
 
   @override
@@ -32,12 +33,15 @@ class AccountPage extends StatelessWidget {
         title: Text('Account'),
         actions: <Widget>[
           FlatButton(
-            onPressed: () => _confirmSignOut(context),
             child: Text(
               'Logout',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
             ),
-          )
+            onPressed: () => _confirmSignOut(context),
+          ),
         ],
       ),
     );

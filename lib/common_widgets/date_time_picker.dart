@@ -11,15 +11,15 @@ class DateTimePicker extends StatelessWidget {
     this.labelText,
     this.selectedDate,
     this.selectedTime,
-    this.onSelectDate,
-    this.onSelectTime,
+    this.onSelectedDate,
+    this.onSelectedTime,
   }) : super(key: key);
 
   final String labelText;
   final DateTime selectedDate;
   final TimeOfDay selectedTime;
-  final ValueChanged<DateTime> onSelectDate;
-  final ValueChanged<TimeOfDay> onSelectTime;
+  final ValueChanged<DateTime> onSelectedDate;
+  final ValueChanged<TimeOfDay> onSelectedTime;
 
   Future<void> _selectDate(BuildContext context) async {
     final pickedDate = await showDatePicker(
@@ -29,20 +29,21 @@ class DateTimePicker extends StatelessWidget {
       lastDate: DateTime(2100),
     );
     if (pickedDate != null && pickedDate != selectedDate) {
-      onSelectDate(pickedDate);
+      onSelectedDate(pickedDate);
     }
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final pickedTime = await showTimePicker(context: context, initialTime: selectedTime);
+    final pickedTime =
+        await showTimePicker(context: context, initialTime: selectedTime);
     if (pickedTime != null && pickedTime != selectedTime) {
-      onSelectTime(pickedTime);
+      onSelectedTime(pickedTime);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final valueStyle = Theme.of(context).textTheme.headline6;
+    final valueStyle = Theme.of(context).textTheme.title;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[

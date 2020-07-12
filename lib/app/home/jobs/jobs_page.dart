@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +14,11 @@ import 'list_items_builder.dart';
 class JobsPage extends StatelessWidget {
   Future<void> _delete(BuildContext context, Job job) async {
     try {
-      final database = Provider.of<Database>(context, listen: false);
+      final database = Provider.of<Database>(context);
       await database.deleteJob(job);
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
-        title: 'Operation Failed',
+        title: 'Operation failed',
         exception: e,
       ).show(context);
     }
@@ -30,12 +31,11 @@ class JobsPage extends StatelessWidget {
         title: Text('Jobs'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
+            icon: Icon(Icons.add, color: Colors.white),
+            onPressed: () => EditJobPage.show(
+              context,
+              database: Provider.of<Database>(context),
             ),
-            onPressed: () => EditJobPage.show(context,
-                database: Provider.of<Database>(context, listen: false)),
           ),
         ],
       ),
@@ -44,7 +44,7 @@ class JobsPage extends StatelessWidget {
   }
 
   Widget _buildContents(BuildContext context) {
-    final database = Provider.of<Database>(context, listen: false);
+    final database = Provider.of<Database>(context);
     return StreamBuilder<List<Job>>(
       stream: database.jobsStream(),
       builder: (context, snapshot) {

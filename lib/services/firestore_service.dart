@@ -49,7 +49,6 @@ class FirestoreService {
   }) {
     final DocumentReference reference = Firestore.instance.document(path);
     final Stream<DocumentSnapshot> snapshots = reference.snapshots();
-    return snapshots
-        .map((snapshot) => builder(snapshot.data, snapshot.documentID));
+    return snapshots.map((snapshot) => builder(snapshot.data, snapshot.documentID));
   }
 }

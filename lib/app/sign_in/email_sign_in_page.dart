@@ -7,7 +7,7 @@ class EmailSignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Time Tracker'),
+        title: Text('Sign in'),
         elevation: 2.0,
       ),
       body: SingleChildScrollView(
@@ -18,6 +18,7 @@ class EmailSignInPage extends StatelessWidget {
           ),
         ),
       ),
+      backgroundColor: Colors.grey[200],
     );
   }
 }

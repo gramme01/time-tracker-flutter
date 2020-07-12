@@ -21,10 +21,10 @@ class JobEntriesPage extends StatelessWidget {
   final Job job;
 
   static Future<void> show(BuildContext context, Job job) async {
-    final Database database = Provider.of<Database>(context, listen: false);
+    final Database database = Provider.of<Database>(context);
     await Navigator.of(context).push(
       CupertinoPageRoute(
-        // fullscreenDialog: false,
+        fullscreenDialog: false,
         builder: (context) => JobEntriesPage(database: database, job: job),
       ),
     );
@@ -52,16 +52,23 @@ class JobEntriesPage extends StatelessWidget {
             appBar: AppBar(
               elevation: 2.0,
               title: Text(jobName),
+              centerTitle: true,
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.white),
-                  onPressed: () =>
-                      EditJobPage.show(context, database: database, job: job),
+                  onPressed: () => EditJobPage.show(
+                    context,
+                    database: database,
+                    job: job,
+                  ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add, color: Colors.white),
                   onPressed: () => EntryPage.show(
-                      context: context, database: database, job: job),
+                    context: context,
+                    database: database,
+                    job: job,
+                  ),
                 ),
               ],
             ),

@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../common_widgets/platform_exception_alert_dialog.dart';
-import '../../../services/database.dart';
+import 'format.dart';
 import '../models/entry.dart';
 import '../models/job.dart';
 import '../../../common_widgets/date_time_picker.dart';
-import 'format.dart';
+import '../../../common_widgets/platform_exception_alert_dialog.dart';
+import '../../../services/database.dart';
 
 class EntryPage extends StatefulWidget {
   const EntryPage({@required this.database, @required this.job, this.entry});
@@ -56,7 +55,7 @@ class _EntryPageState extends State<EntryPage> {
         _startTime.hour, _startTime.minute);
     final end = DateTime(_endDate.year, _endDate.month, _endDate.day,
         _endTime.hour, _endTime.minute);
-    final id = widget.entry?.id ?? documentIdFromCurrentDate;
+    final id = widget.entry?.id ?? documentIdFromCurrentDate();
     return Entry(
       id: id,
       jobId: widget.job.id,
@@ -120,8 +119,8 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'Start',
       selectedDate: _startDate,
       selectedTime: _startTime,
-      onSelectDate: (date) => setState(() => _startDate = date),
-      onSelectTime: (time) => setState(() => _startTime = time),
+      onSelectedDate: (date) => setState(() => _startDate = date),
+      onSelectedTime: (time) => setState(() => _startTime = time),
     );
   }
 
@@ -130,8 +129,8 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'End',
       selectedDate: _endDate,
       selectedTime: _endTime,
-      onSelectDate: (date) => setState(() => _endDate = date),
-      onSelectTime: (time) => setState(() => _endTime = time),
+      onSelectedDate: (date) => setState(() => _endDate = date),
+      onSelectedTime: (time) => setState(() => _endTime = time),
     );
   }
 

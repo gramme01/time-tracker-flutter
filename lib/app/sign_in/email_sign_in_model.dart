@@ -1,24 +1,20 @@
 import 'validators.dart';
 
-enum EmailSignInFormType {
-  signIn,
-  register,
-}
+enum EmailSignInFormType { signIn, register }
 
 class EmailSignInModel with EmailAndPasswordValidators {
-  final String email;
-  final String password;
-  final EmailSignInFormType formType;
-  final bool isLoading;
-  final bool hasSubmitted;
-
   EmailSignInModel({
     this.email = '',
     this.password = '',
     this.formType = EmailSignInFormType.signIn,
     this.isLoading = false,
-    this.hasSubmitted = false,
+    this.submitted = false,
   });
+  final String email;
+  final String password;
+  final EmailSignInFormType formType;
+  final bool isLoading;
+  final bool submitted;
 
   String get primaryButtonText {
     return formType == EmailSignInFormType.signIn
@@ -34,20 +30,18 @@ class EmailSignInModel with EmailAndPasswordValidators {
 
   bool get canSubmit {
     return emailValidator.isValid(email) &&
-        pswrdValidator.isValid(password) &&
+        passwordValidator.isValid(password) &&
         !isLoading;
   }
 
-  String get emailErrorText {
-    bool shouldShowEmailErrorText =
-        hasSubmitted && emailValidator.isNotValid(email);
-    return shouldShowEmailErrorText ? invalidEmailErrorText : null;
+  String get passwordErrorText {
+    bool showErrorText = submitted && !passwordValidator.isValid(password);
+    return showErrorText ? invalidPasswordErrorText : null;
   }
 
-  String get passwordErrorText {
-    bool shouldShowPasswordErrorText =
-        hasSubmitted && pswrdValidator.isNotValid(password);
-    return shouldShowPasswordErrorText ? invalidPasswordErrorText : null;
+  String get emailErrorText {
+    bool showErrorText = submitted && !emailValidator.isValid(email);
+    return showErrorText ? invalidEmailErrorText : null;
   }
 
   EmailSignInModel copyWith({
@@ -55,14 +49,14 @@ class EmailSignInModel with EmailAndPasswordValidators {
     String password,
     EmailSignInFormType formType,
     bool isLoading,
-    bool hasSubmitted,
+    bool submitted,
   }) {
     return EmailSignInModel(
       email: email ?? this.email,
       password: password ?? this.password,
       formType: formType ?? this.formType,
       isLoading: isLoading ?? this.isLoading,
-      hasSubmitted: hasSubmitted ?? this.hasSubmitted,
+      submitted: submitted ?? this.submitted,
     );
   }
 }

@@ -6,19 +6,19 @@ import 'package:flutter/material.dart';
 import 'platform_widget.dart';
 
 class PlatformAlertDialog extends PlatformWidget {
-  final String title;
-  final String content;
-  final String noActionText;
-  final String yesActionText;
-
   PlatformAlertDialog({
     @required this.title,
     @required this.content,
-    this.noActionText,
-    @required this.yesActionText,
+    this.cancelActionText,
+    @required this.defaultActionText,
   })  : assert(title != null),
         assert(content != null),
-        assert(yesActionText != null);
+        assert(defaultActionText != null);
+
+  final String title;
+  final String content;
+  final String cancelActionText;
+  final String defaultActionText;
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -53,19 +53,18 @@ class PlatformAlertDialog extends PlatformWidget {
 
   List<Widget> _buildActions(BuildContext context) {
     final actions = <Widget>[];
-
-    if (noActionText != null) {
+    if (cancelActionText != null) {
       actions.add(
         PlatformAlertDialogAction(
-          child: Text(noActionText),
-          onPressed: () => Navigator.pop(context, false),
+          child: Text(cancelActionText),
+          onPressed: () => Navigator.of(context).pop(false),
         ),
       );
     }
     actions.add(
       PlatformAlertDialogAction(
-        child: Text(yesActionText),
-        onPressed: () => Navigator.pop(context, true),
+        child: Text(defaultActionText),
+        onPressed: () => Navigator.of(context).pop(true),
       ),
     );
     return actions;
@@ -73,13 +72,9 @@ class PlatformAlertDialog extends PlatformWidget {
 }
 
 class PlatformAlertDialogAction extends PlatformWidget {
+  PlatformAlertDialogAction({this.child, this.onPressed});
   final Widget child;
   final VoidCallback onPressed;
-
-  PlatformAlertDialogAction({
-    @required this.child,
-    @required this.onPressed,
-  });
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
@@ -90,7 +85,7 @@ class PlatformAlertDialogAction extends PlatformWidget {
   }
 
   @override
-  Widget buildMaterialWidget(BuildContext contexntext) {
+  Widget buildMaterialWidget(BuildContext context) {
     return FlatButton(
       child: child,
       onPressed: onPressed,
