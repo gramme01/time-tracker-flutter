@@ -11,7 +11,7 @@ class FirestoreService {
   }) async {
     final reference = Firestore.instance.document(path);
     print('$path: $data');
-    await reference.setData(data, merge: true);
+    await reference.setData(data);
   }
 
   Future<void> deleteData({@required String path}) async {
@@ -49,6 +49,7 @@ class FirestoreService {
   }) {
     final DocumentReference reference = Firestore.instance.document(path);
     final Stream<DocumentSnapshot> snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => builder(snapshot.data, snapshot.documentID));
+    return snapshots
+        .map((snapshot) => builder(snapshot.data, snapshot.documentID));
   }
 }

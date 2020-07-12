@@ -1,30 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../../services/database.dart';
-import '../job_entries/format.dart';
-import '../models/entry.dart';
-import '../models/job.dart';
 import 'daily_jobs_details.dart';
 import 'entries_list_tile.dart';
 import 'entry_job.dart';
+import '../job_entries/format.dart';
+import '../models/entry.dart';
+import '../models/job.dart';
+import '../../../services/database.dart';
 
 class EntriesBloc {
   EntriesBloc({@required this.database});
   final Database database;
 
   /// combine List<Job>, List<Entry> into List<EntryJob>
-  Stream<List<EntryJob>> get _allEntriesStream => Rx.combineLatest2(
+  Stream<List<EntryJob>> get _allEntriesStream => Observable.combineLatest2(
         database.entriesStream(),
         database.jobsStream(),
         _entriesJobsCombiner,
       );
-
-  // Stream<List<EntryJob>> get _allEntriesStream => Observable.combineLatest2(
-  //       database.entriesStream(),
-  //       database.jobsStream(),
-  //       _entriesJobsCombiner,
-  //     );
 
   static List<EntryJob> _entriesJobsCombiner(
       List<Entry> entries, List<Job> jobs) {
