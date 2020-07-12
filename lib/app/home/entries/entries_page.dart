@@ -8,7 +8,7 @@ import 'entries_list_tile.dart';
 
 class EntriesPage extends StatelessWidget {
   static Widget create(BuildContext context) {
-    final database = Provider.of<Database>(context);
+    final database = Provider.of<Database>(context, listen: false);
     return Provider<EntriesBloc>(
       create: (_) => EntriesBloc(database: database),
       child: EntriesPage(),
@@ -27,7 +27,7 @@ class EntriesPage extends StatelessWidget {
   }
 
   Widget _buildContents(BuildContext context) {
-    final bloc = Provider.of<EntriesBloc>(context);
+    final bloc = Provider.of<EntriesBloc>(context, listen: false);
     return StreamBuilder<List<EntriesListTileModel>>(
       stream: bloc.entriesTileModelStream,
       builder: (context, snapshot) {
