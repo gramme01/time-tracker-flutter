@@ -17,7 +17,7 @@ abstract class Database {
   Stream<List<Entry>> entriesStream({Job job});
 }
 
-String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
+String documentIdFromCurrentDate = DateTime.now().toIso8601String();
 
 class FirestoreDatabase implements Database {
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
@@ -77,4 +77,3 @@ class FirestoreDatabase implements Database {
         sort: (lhs, rhs) => rhs.start.compareTo(lhs.start),
       );
 }
-

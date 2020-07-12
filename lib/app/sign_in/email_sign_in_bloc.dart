@@ -1,23 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../services/auth.dart';
 
 import 'email_sign_in_model.dart';
 
 class EmailSignInBloc {
   final AuthBase auth;
-  final StreamController<EmailSignInModel> _modelController =
-      StreamController<EmailSignInModel>();
+  final _modelSubject =
+      BehaviorSubject<EmailSignInModel>.seeded(EmailSignInModel());
 
   EmailSignInBloc({@required this.auth});
 
-  Stream<EmailSignInModel> get modelStream => _modelController.stream;
+  Observable<EmailSignInModel> get modelStream => _modelSubject.stream;
 
-  EmailSignInModel _model = EmailSignInModel();
+  EmailSignInModel get _model => _modelSubject.value;
 
   void dispose() {
-    _modelController.close();
+    _modelSubject.close();
   }
 
   void updateEmail(String email) => updateWith(email: email);
@@ -43,15 +44,13 @@ class EmailSignInBloc {
     bool hasSubmitted,
   }) {
     // update model
-    _model = _model.copyWith(
+    _modelSubject.value = _model.copyWith(
       email: email,
       password: password,
       formType: formType,
       isLoading: isLoading,
       hasSubmitted: hasSubmitted,
     );
-    // sink updated model to _modelController
-    _modelController.add(_model);
   }
 
   Future<void> submit() async {

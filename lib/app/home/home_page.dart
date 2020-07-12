@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'account/account_page.dart';
 import 'cupertino_home_scaffold.dart';
+import 'entries/entries_page.dart';
 import 'jobs/jobs_page.dart';
 import 'tab_item.dart';
 
@@ -21,13 +22,17 @@ class _HomepageState extends State<Homepage> {
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       TabItem.jobs: (_) => JobsPage(),
-      TabItem.entries: (_) => Container(),
+      TabItem.entries: (context) => EntriesPage.create(context),
       TabItem.account: (_) => AccountPage(),
     };
   }
 
   void _select(TabItem tabitem) {
-    setState(() => _currentTab = tabitem);
+    if (tabitem == _currentTab) {
+      navigatorKeys[tabitem].currentState.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => _currentTab = tabitem);
+    }
   }
 
   @override
