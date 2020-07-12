@@ -21,7 +21,9 @@ class ListItemsBuilder<T> extends StatelessWidget {
       } else {
         return EmptyContent();
       }
-    } else if (snapshot.hasError) {
+    } 
+    else if (snapshot.hasError) {
+      print(snapshot);
       return EmptyContent(
         title: 'Something went wrong',
         message: 'Can\'t load items right now',

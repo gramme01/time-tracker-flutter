@@ -14,11 +14,17 @@ class EntriesBloc {
   final Database database;
 
   /// combine List<Job>, List<Entry> into List<EntryJob>
-  Stream<List<EntryJob>> get _allEntriesStream => Observable.combineLatest2(
+  Stream<List<EntryJob>> get _allEntriesStream => Rx.combineLatest2(
         database.entriesStream(),
         database.jobsStream(),
         _entriesJobsCombiner,
       );
+
+  // Stream<List<EntryJob>> get _allEntriesStream => Observable.combineLatest2(
+  //       database.entriesStream(),
+  //       database.jobsStream(),
+  //       _entriesJobsCombiner,
+  //     );
 
   static List<EntryJob> _entriesJobsCombiner(
       List<Entry> entries, List<Job> jobs) {
