@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'account/account_page.dart';
-import 'cupertino_home_scaffold.dart';
-import 'entries/entries_page.dart';
-import 'jobs/jobs_page.dart';
-import 'tab_item.dart';
+import 'package:time_tracker/app/home/account/account_page.dart';
+import 'package:time_tracker/app/home/cupertino_home_scaffold.dart';
+import 'package:time_tracker/app/home/entries/entries_page.dart';
+import 'package:time_tracker/app/home/jobs/jobs_page.dart';
+import 'package:time_tracker/app/home/tab_item.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Map<TabItem, WidgetBuilder> get widgetBuilders {
     return {
       TabItem.jobs: (_) => JobsPage(),
-      TabItem.entries: (_) => EntriesPage.create(context),
+      TabItem.entries: (context) => EntriesPage.create(context),
       TabItem.account: (_) => AccountPage(),
     };
   }

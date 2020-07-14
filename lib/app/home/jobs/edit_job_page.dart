@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../../common_widgets/platform_alert_dialog.dart';
-import '../../../common_widgets/platform_exception_alert_dialog.dart';
-import '../../../services/database.dart';
-import '../models/job.dart';
+import 'package:time_tracker/app/home/models/job.dart';
+import 'package:time_tracker/common_widgets/platform_alert_dialog.dart';
+import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
+import 'package:time_tracker/services/database.dart';
 
 class EditJobPage extends StatefulWidget {
   const EditJobPage({Key key, @required this.database, this.job})

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../models/entry.dart';
-import '../models/job.dart';
-import 'format.dart';
+import 'package:time_tracker/app/home/job_entries/format.dart';
+import 'package:time_tracker/app/home/models/entry.dart';
+import 'package:time_tracker/app/home/models/job.dart';
 
 class EntryListItem extends StatelessWidget {
   const EntryListItem({

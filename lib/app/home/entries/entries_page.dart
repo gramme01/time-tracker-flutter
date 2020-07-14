@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../services/database.dart';
-import '../jobs/list_items_builder.dart';
-import 'entries_bloc.dart';
-import 'entries_list_tile.dart';
+import 'package:time_tracker/app/home/entries/entries_bloc.dart';
+import 'package:time_tracker/app/home/entries/entries_list_tile.dart';
+import 'package:time_tracker/app/home/jobs/list_items_builder.dart';
+import 'package:time_tracker/services/database.dart';
 
 class EntriesPage extends StatelessWidget {
   static Widget create(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-
-import 'platform_alert_dialog.dart';
+import 'package:time_tracker/common_widgets/platform_alert_dialog.dart';
 
 class PlatformExceptionAlertDialog extends PlatformAlertDialog {
   PlatformExceptionAlertDialog({

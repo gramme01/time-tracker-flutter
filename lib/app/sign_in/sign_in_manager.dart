@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-
-import '../../services/auth.dart';
+import 'package:time_tracker/services/auth.dart';
 
 class SignInManager {
   SignInManager({@required this.auth, @required this.isLoading});

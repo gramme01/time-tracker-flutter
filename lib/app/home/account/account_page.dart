@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../common_widgets/platform_alert_dialog.dart';
-import '../../../services/auth.dart';
+import 'package:time_tracker/common_widgets/platform_alert_dialog.dart';
+import 'package:time_tracker/services/auth.dart';
 
 class AccountPage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
