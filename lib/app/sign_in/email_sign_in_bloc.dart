@@ -13,7 +13,7 @@ class EmailSignInBloc {
 
   EmailSignInBloc({@required this.auth});
 
-  Observable<EmailSignInModel> get modelStream => _modelSubject.stream;
+  ValueStream<EmailSignInModel> get modelStream => _modelSubject.stream;
 
   EmailSignInModel get _model => _modelSubject.value;
 
