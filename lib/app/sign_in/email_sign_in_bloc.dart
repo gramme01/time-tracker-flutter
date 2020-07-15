@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../services/auth.dart';
 
+import '../../services/auth.dart';
 import 'email_sign_in_model.dart';
 
 class EmailSignInBloc {
   final AuthBase auth;
+  EmailSignInBloc({@required this.auth});
+
   final _modelSubject =
       BehaviorSubject<EmailSignInModel>.seeded(EmailSignInModel());
-
-  EmailSignInBloc({@required this.auth});
 
   ValueStream<EmailSignInModel> get modelStream => _modelSubject.stream;
 
