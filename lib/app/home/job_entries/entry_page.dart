@@ -56,7 +56,7 @@ class _EntryPageState extends State<EntryPage> {
         _startTime.hour, _startTime.minute);
     final end = DateTime(_endDate.year, _endDate.month, _endDate.day,
         _endTime.hour, _endTime.minute);
-    final id = widget.entry?.id ?? documentIdFromCurrentDate;
+    final id = widget.entry?.id ?? documentIdFromCurrentDate();
     return Entry(
       id: id,
       jobId: widget.job.id,
