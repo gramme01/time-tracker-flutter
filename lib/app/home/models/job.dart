@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
 class Job {
@@ -30,5 +31,17 @@ class Job {
 
   String toJson() => json.encode(toMap());
 
-  
+  @override
+  // int get hashCode => hashValues(id, name, ratePerHour);
+  int get hashCode => id.hashCode ^ name.hashCode ^ ratePerHour.hashCode;
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is Job &&
+        o.id == id &&
+        o.name == name &&
+        o.ratePerHour == ratePerHour;
+  }
 }
