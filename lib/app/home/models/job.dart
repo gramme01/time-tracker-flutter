@@ -29,4 +29,6 @@ class Job {
   }
 
   String toJson() => json.encode(toMap());
+
+  
 }
