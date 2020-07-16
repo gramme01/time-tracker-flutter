@@ -14,5 +14,22 @@ void main() {
       );
       expect(job, Job(id: 'abc', name: 'Blogging', ratePerHour: 10));
     });
+    test('missing name', () {
+      final job = Job.fromMap(
+        {'ratePerHour': 10},
+        'abc',
+      );
+      expect(job, null);
+    });
+  });
+
+  group('toMap', () {
+    test('valid name, ratePerHour', () {
+      final job = Job(id: 'abc', name: 'Blogging', ratePerHour: 10);
+      expect(job.toMap(), {
+        'name': "Blogging",
+        'ratePerHour': 10,
+      });
+    });
   });
 }

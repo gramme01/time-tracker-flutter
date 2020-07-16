@@ -22,6 +22,7 @@ class Job {
 
   static Job fromMap(Map<String, dynamic> map, String documentId) {
     if (map == null) return null;
+    if (map['name'] == null) return null;
     return Job(
       id: documentId,
       name: map['name'],
@@ -44,4 +45,7 @@ class Job {
         o.name == name &&
         o.ratePerHour == ratePerHour;
   }
+
+  @override
+  String toString() => 'Job(id: $id, name: $name, ratePerHour: $ratePerHour)';
 }
