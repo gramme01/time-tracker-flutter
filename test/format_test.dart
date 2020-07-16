@@ -60,13 +60,10 @@ void main() {
       expect(Format.currency(10), '\$10');
     });
     test('zero', () {
-      expect(Format.currency(0), '0h');
+      expect(Format.currency(0), '');
     });
     test('negative', () {
-      expect(Format.currency(-5), '0h');
-    });
-    test('decimal', () {
-      expect(Format.currency(4.5), '4.5h');
+      expect(Format.currency(-5), '-\$5');
     });
   });
 }
