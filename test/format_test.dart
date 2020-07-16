@@ -31,4 +31,42 @@ void main() {
       expect(Format.date(DateTime(2019, 2, 28)), '28 Feb 2019');
     });
   });
+
+  group('dayOfWeek - GB locale', () {
+    setUp(() async {
+      Intl.defaultLocale = 'en_GB';
+      await initializeDateFormatting(Intl.defaultLocale);
+    });
+    test('Monday', () {
+      expect(Format.dayOfWeek(DateTime(2020, 7, 16)), 'Thu');
+    });
+  });
+
+  group('dayOfWeek - GB locale', () {
+    setUp(() async {
+      Intl.defaultLocale = 'it_IT';
+      await initializeDateFormatting(Intl.defaultLocale);
+    });
+    test('Giovedi', () {
+      expect(Format.dayOfWeek(DateTime(2020, 7, 16)), 'gio');
+    });
+  });
+
+  group('currency - US locale', () {
+    setUp(() async {
+      Intl.defaultLocale = 'en_US';
+    });
+    test('positive', () {
+      expect(Format.currency(10), '\$10');
+    });
+    test('zero', () {
+      expect(Format.currency(0), '0h');
+    });
+    test('negative', () {
+      expect(Format.currency(-5), '0h');
+    });
+    test('decimal', () {
+      expect(Format.currency(4.5), '4.5h');
+    });
+  });
 }
