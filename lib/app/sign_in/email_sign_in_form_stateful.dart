@@ -84,6 +84,7 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
     bool shouldShowPswordErrorText =
         _submitted && widget.pswrdValidator.isNotValid(_password);
     return TextField(
+      key: Key('password'),
       controller: _pswrdController,
       focusNode: _pswrdFocusNode,
       obscureText: true,
@@ -103,6 +104,7 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
     bool shouldShowEmailErrorText =
         _submitted && widget.emailValidator.isNotValid(_email);
     return TextField(
+      key: Key('email'),
       controller: _emailController,
       focusNode: _emailFocusNode,
       decoration: InputDecoration(

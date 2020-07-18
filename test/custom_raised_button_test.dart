@@ -12,7 +12,7 @@ void main() {
           onPressed: () => pressed = true,
         ),
       ),
-    );
+    ); 
     final button = find.byType(RaisedButton);
     expect(button, findsOneWidget);
     expect(find.byType(FlatButton), findsNothing);
