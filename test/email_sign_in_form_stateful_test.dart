@@ -15,13 +15,16 @@ void main() {
     mockAuth = MockAuth();
   });
 
-  Future<void> pumpEmailSignInForm(WidgetTester tester) async {
+  Future<void> pumpEmailSignInForm(WidgetTester tester,
+      {VoidCallback onSignedIn}) async {
     await tester.pumpWidget(
       Provider<AuthBase>(
         create: (context) => mockAuth,
         child: MaterialApp(
           home: Scaffold(
-            body: EmailSignInFormStateful(),
+            body: EmailSignInFormStateful(
+              onSignedIn: onSignedIn,
+            ),
           ),
         ),
       ),
@@ -30,42 +33,56 @@ void main() {
 
   group('sign in', () {
     testWidgets(
-        'WHEN user doesn\'t enter the email and password '
-        'AND user taps on the sign-in button '
-        'THEN signInWithEmailAndPassword is not called',
-        (WidgetTester tester) async {
-      await pumpEmailSignInForm(tester);
-      final signInButton = find.text('Sign in');
-      await tester.tap(signInButton);
+      'WHEN user doesn\'t enter the email and password '
+      'AND user taps on the sign-in button '
+      'THEN signInWithEmailAndPassword is not called '
+      'AND user is not signed in',
+      (WidgetTester tester) async {
+        var signedIn = false;
+        await pumpEmailSignInForm(
+          tester,
+          onSignedIn: () => signedIn = true,
+        );
+        final signInButton = find.text('Sign in');
+        await tester.tap(signInButton);
 
-      verifyNever(mockAuth.signInWithEmailAndPassword(any, any));
-    });
+        verifyNever(mockAuth.signInWithEmailAndPassword(any, any));
+        expect(signedIn, false);
+      },
+    );
 
     testWidgets(
-        'WHEN user enters the email and password '
-        'AND user taps on the sign-in button '
-        'THEN signInWithEmailAndPassword is called',
-        (WidgetTester tester) async {
-      await pumpEmailSignInForm(tester);
+      'WHEN user enters a valid email and password '
+      'AND user taps on the sign-in button '
+      'THEN signInWithEmailAndPassword is called '
+      'AND user is signed in',
+      (WidgetTester tester) async {
+        var signedIn = false;
+        await pumpEmailSignInForm(
+          tester,
+          onSignedIn: () => signedIn = true,
+        );
 
-      const email = 'email@email.com';
-      const password = 'password';
+        const email = 'email@email.com';
+        const password = 'password';
 
-      final emailField = find.byKey(Key('email'));
-      expect(emailField, findsOneWidget);
-      await tester.enterText(emailField, email);
+        final emailField = find.byKey(Key('email'));
+        expect(emailField, findsOneWidget);
+        await tester.enterText(emailField, email);
 
-      final passwordField = find.byKey(Key('password'));
-      expect(passwordField, findsOneWidget);
-      await tester.enterText(passwordField, password);
+        final passwordField = find.byKey(Key('password'));
+        expect(passwordField, findsOneWidget);
+        await tester.enterText(passwordField, password);
 
-      await tester.pump();
+        await tester.pump();
 
-      final signInButton = find.text('Sign in');
-      await tester.tap(signInButton);
+        final signInButton = find.text('Sign in');
+        await tester.tap(signInButton);
 
-      verify(mockAuth.signInWithEmailAndPassword(email, password)).called(1);
-    });
+        verify(mockAuth.signInWithEmailAndPassword(email, password)).called(1);
+        expect(signedIn, true);
+      },
+    );
   });
 
   group('register', () {

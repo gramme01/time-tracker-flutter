@@ -10,6 +10,9 @@ import 'validators.dart';
 
 class EmailSignInFormStateful extends StatefulWidget
     with EmailAndPasswordValidators {
+  final VoidCallback onSignedIn;
+
+  EmailSignInFormStateful({this.onSignedIn});
   @override
   _EmailSignInFormStatefulState createState() =>
       _EmailSignInFormStatefulState();
@@ -49,7 +52,10 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
       } else {
         await auth.createUserWithEmailAndPassword(_email, _password);
       }
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      if (widget.onSignedIn != null) {
+        widget.onSignedIn();
+      }
     } on PlatformException catch (e) {
       PlatformExceptionAlertDialog(
         title: 'Sign in failed',
