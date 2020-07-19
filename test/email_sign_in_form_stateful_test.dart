@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,26 @@ void main() {
         ),
       ),
     );
+  }
+
+  void stubSignInWithEmailAndPasswordSucceeds() {
+    when(mockAuth.createUserWithEmailAndPassword(any, any))
+        .thenAnswer((_) => Future<User>.value(User(uid: 'abc')));
+  }
+
+  void stubSignInWithEmailAndPasswordThrows() {
+    when(mockAuth.signInWithEmailAndPassword(any, any))
+        .thenThrow(PlatformException(code: 'ERROR_WRONG_PASSWORD'));
+  }
+
+  void stubCreateUserWithEmailAndPasswordSucceeds() {
+    when(mockAuth.createUserWithEmailAndPassword(any, any))
+        .thenAnswer((_) => Future<User>.value(User(uid: 'abc')));
+  }
+
+  void stubCreateUserWithEmailAndPasswordThrows() {
+    when(mockAuth.createUserWithEmailAndPassword(any, any))
+        .thenThrow(PlatformException(code: 'ERROR_WRONG_PASSWORD'));
   }
 
   group('sign in', () {
@@ -62,7 +83,7 @@ void main() {
           tester,
           onSignedIn: () => signedIn = true,
         );
-
+        stubSignInWithEmailAndPasswordSucceeds();
         const email = 'email@email.com';
         const password = 'password';
 
@@ -83,6 +104,39 @@ void main() {
         expect(signedIn, true);
       },
     );
+
+    testWidgets(
+      'WHEN user enters a invalid email and password '
+      'AND user taps on the sign-in button '
+      'THEN signInWithEmailAndPassword is called '
+      'AND user is not signed in',
+      (WidgetTester tester) async {
+        var signedIn = false;
+        await pumpEmailSignInForm(
+          tester,
+          onSignedIn: () => signedIn = true,
+        );
+        stubSignInWithEmailAndPasswordThrows();
+        const email = 'email@email.com';
+        const password = 'password';
+
+        final emailField = find.byKey(Key('email'));
+        expect(emailField, findsOneWidget);
+        await tester.enterText(emailField, email);
+
+        final passwordField = find.byKey(Key('password'));
+        expect(passwordField, findsOneWidget);
+        await tester.enterText(passwordField, password);
+
+        await tester.pump();
+
+        final signInButton = find.text('Sign in');
+        await tester.tap(signInButton);
+
+        verify(mockAuth.signInWithEmailAndPassword(email, password)).called(1);
+        expect(signedIn, false);
+      },
+    );
   });
 
   group('register', () {
@@ -101,10 +155,50 @@ void main() {
 
     testWidgets(
         'WHEN user taps the secondary button '
-        'AND user enters the email and password '
+        'AND user enters a valid email and password '
+        'AND user taps Create an account'
         'THEN createUserWithEmailAndPassword is called',
         (WidgetTester tester) async {
       await pumpEmailSignInForm(tester);
+
+      stubCreateUserWithEmailAndPasswordSucceeds();
+
+      const email = 'email@email.com';
+      const password = 'password';
+
+      final registerButton = find.text('Need an account? Register');
+      await tester.tap(registerButton);
+
+      await tester.pump();
+
+      final emailField = find.byKey(Key('email'));
+      expect(emailField, findsOneWidget);
+      await tester.enterText(emailField, email);
+
+      final passwordField = find.byKey(Key('password'));
+      expect(passwordField, findsOneWidget);
+      await tester.enterText(passwordField, password);
+
+      await tester.pump();
+
+      final createAccountButton = find.text('Create an account');
+      expect(createAccountButton, findsOneWidget);
+
+      await tester.tap(createAccountButton);
+
+      verify(mockAuth.createUserWithEmailAndPassword(email, password))
+          .called(1);
+    });
+
+    testWidgets(
+        'WHEN user taps the secondary button '
+        'AND user enters a invalid email and password '
+        'AND user taps Create an account'
+        'THEN createUserWithEmailAndPassword is not called',
+        (WidgetTester tester) async {
+      await pumpEmailSignInForm(tester);
+
+      stubCreateUserWithEmailAndPasswordThrows();
 
       const email = 'email@email.com';
       const password = 'password';

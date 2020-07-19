@@ -11,8 +11,8 @@ class User {
 
   User({
     @required this.uid,
-    @required this.photoUrl,
-    @required this.displayName,
+     this.photoUrl,
+     this.displayName,
   });
 }
 
