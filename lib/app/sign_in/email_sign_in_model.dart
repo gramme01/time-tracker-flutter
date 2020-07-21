@@ -65,4 +65,30 @@ class EmailSignInModel with EmailAndPasswordValidators {
       hasSubmitted: hasSubmitted ?? this.hasSubmitted,
     );
   }
+
+  @override
+  String toString() {
+    return 'EmailSignInModel(email: $email, password: $password, formType: $formType, isLoading: $isLoading, hasSubmitted: $hasSubmitted)';
+  }
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is EmailSignInModel &&
+        o.email == email &&
+        o.password == password &&
+        o.formType == formType &&
+        o.isLoading == isLoading &&
+        o.hasSubmitted == hasSubmitted;
+  }
+
+  @override
+  int get hashCode {
+    return email.hashCode ^
+        password.hashCode ^
+        formType.hashCode ^
+        isLoading.hashCode ^
+        hasSubmitted.hashCode;
+  }
 }
